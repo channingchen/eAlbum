@@ -9,6 +9,7 @@ if __name__ == '__main__':
     HOST = cf.get("env", "host")
     user = cf.get("account", "username")
     pwd = cf.get("account", "passwd")
+    album_id = cf.get("account", "album_id")
 
     login_url = HOST + "auth.cgi?api=SYNO.API.Auth&version=6&method=login&account=%s&passwd=%s" % (user, pwd)
     my_cookie = {"type": "tunnel"}
@@ -18,8 +19,8 @@ if __name__ == '__main__':
     login_cookies = dict(ret.cookies)
     my_cookie.update(login_cookies)
 
-    list_photos_url = HOST + "entry.cgi?offset=0&limit=100&album_id=4&api=SYNO.Photo.Browse.Item&method=list&version=2"
-    ret = requests.get(list_photos_url, cookies=my_cookie)
+    list_photos_url = HOST + "entry.cgi?offset=0&limit=100&album_id=%s&api=SYNO.Photo.Browse.Item&method=list&version=2"
+    ret = requests.get(list_photos_url % album_id, cookies=my_cookie)
     print("2. list\n%s\n%s\n" % (list_photos_url, ret.text))
 
     print("3. download")
